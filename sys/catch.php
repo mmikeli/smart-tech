@@ -1,34 +1,46 @@
 <?php
-	date_default_timezone_set('America/Sao_Paulo');
-    
-	if(session_status() != PHP_SESSION_ACTIVE) {
-	    ini_set('session.use_strict_mode', 0);
-	    session_start();
-	}
+date_default_timezone_set('America/Sao_Paulo');
 
-	include("check_permission.php");
-	include("sets.php");
-	include("config.php");
+if (session_status() != PHP_SESSION_ACTIVE) {
+    ini_set('session.use_strict_mode', 0);
+    session_start();
+}
 
-	$chaveRevenda = $_SESSION['chaveRevenda'];
-	$nivelRevenda = $_SESSION['nivelRevenda'];
+include "check_permission.php";
+include "sets.php";
+include "config.php";
 
-	if(isset($_GET['desalocar'])){
+$chaveRevenda = $_SESSION['chaveRevenda'];
+$nivelRevenda = $_SESSION['nivelRevenda'];
 
-		$revID = $_GET['r'];
-		$prodID = $_GET['p'];
+if (isset($_GET['desalocar'])) {
 
-		$sql = "SELECT chave FROM estoque WHERE chave_revenda = '$revID'";
-		$qry = $strcon->query($sql) or die($strcon->error);
-		$con = mysqli_fetch_assoc($qry);
+    $revID  = $_GET['r'];
+    $prodID = $_GET['p'];
 
-		$estoqueID = $con['chave'];
+    $sql = "SELECT chave FROM estoque WHERE chave_revenda = '$revID'";
+    $qry = $strcon->query($sql);
+    $con = mysqli_fetch_assoc($qry);
 
-		$sqlSS = "SELECT chave FROM seriais WHERE chave_produto = '$prodID' AND chave_estoque = '$estoqueID' AND status = '0'";
-		$qrySS = $strcon->query($sqlSS) or die($strcon->error);
-		$dadosSS = mysqli_fetch_assoc($qrySS);
-		$rows = mysqli_num_rows($qrySS);
+    $estoqueID = $con['chave'];
 
-		echo $rows;
+    $sqlSS   = "SELECT chave FROM seriais WHERE chave_produto = '$prodID' AND chave_estoque = '$estoqueID' AND status = '0'";
+    $qrySS   = $strcon->query($sqlSS);
+    $dadosSS = mysqli_fetch_assoc($qrySS);
+    $rows    = mysqli_num_rows($qrySS);
 
-	}
+    echo $rows;
+
+}
+
+if (isset($_GET['dump_temp'])) {
+
+    $temp_row_id = $_GET['i'];
+
+    $sql = "DELETE FROM temp WHERE codigo_lista = $temp_row_id";
+    if ($qry = $strcon->query($sql)) {
+        echo 'success';
+    } else {
+        echo 'error';
+    }
+}
