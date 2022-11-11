@@ -5,6 +5,6 @@
         session_start();
     }
 
-	$strcon = mysqli_connect('194.195.84.204', 'u296526003_root', 'Mj05012018@', 'u296526003_app') or die('Erro ao conectar ao banco de dados');
+	$strcon = mysqli_connect('194.195.84.204', 'u296526003_root', 'rD4amD2gfkdu8mF', 'u296526003_app') or die('Erro ao conectar ao banco de dados');
 
 ?>
